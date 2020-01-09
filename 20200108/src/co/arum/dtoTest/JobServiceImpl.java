@@ -34,21 +34,21 @@ public class JobServiceImpl extends DAO implements Service {
 	}
 
 	@Override
-	public Object select(Object dto) throws Exception {
+	public Object select(String key) throws Exception {
 
-		JobDto jobDto = (JobDto)dto;
-		String sql = "SELECT * FROM jobs WHERE job_id = " + jobDto.getJob_id();
+		String sql = "SELECT * FROM jobs WHERE job_id = ?";
 		psmt = conn.prepareStatement(sql);
+		psmt.setString(1, key);
 		rs = psmt.executeQuery();
 		
-		JobDto insdto = new JobDto();
-		while(rs.next()) { //next 처음 커서는 before File next실행시 1행 행이 비어있으면 false
-			insdto.setJob_id(rs.getString("job_id"));
-			insdto.setJob_title(rs.getString("job_title"));
-			insdto.setMax_salary(rs.getInt("max_salary"));
-			insdto.setMin_salary(rs.getInt("min_salary"));
+		JobDto dto = new JobDto();
+		if(rs.next()) { //next 처음 커서는 before File next실행시 1행 행이 비어있으면 false
+			dto.setJob_id(rs.getString("job_id"));
+			dto.setJob_title(rs.getString("job_title"));
+			dto.setMax_salary(rs.getInt("max_salary"));
+			dto.setMin_salary(rs.getInt("min_salary"));
 		}
-		return insdto;
+		return dto;
 	}
 
 	@Override

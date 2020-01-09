@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class EmployeeDisplay {
 	
@@ -49,5 +50,72 @@ public class EmployeeDisplay {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void searchSelect() {
+		EmployeeDto dto = new EmployeeDto();
+		EmployeeServiceImpl emp = new EmployeeServiceImpl();
+		Scanner sc = new Scanner (System.in);
+		System.out.print("검색할 ID : ");
+		int key = sc.nextInt();
+		try {
+			dto = emp.select(key);
+			dto.toString();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void employeeDelete() {
+		allSelectList();
+		EmployeeDto dto = new EmployeeDto();
+		EmployeeServiceImpl emp = new EmployeeServiceImpl();
+		Scanner sc = new Scanner (System.in);
+		System.out.print("삭제할 ID : ");
+		int key = sc.nextInt();
+		dto.setEmployee_id(key);
+		try {
+			int n = emp.delete(dto);
+			if(n != 0) {
+				System.out.println("삭제 완료");
+			}else {
+				System.out.println("do not delete");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		sc.close();
+		allSelectList();
+	}
+	
+	public void employeeUpdate() {
+		EmployeeDto dto = new EmployeeDto();
+		EmployeeServiceImpl emp = new EmployeeServiceImpl();
+		Scanner sc = new Scanner (System.in);
+
+		allSelectList();
+		System.out.print("변경할 ID : ");
+		int key = sc.nextInt(); sc.nextLine();
+		try {
+			dto = emp.select(key);
+			dto.toString();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.print("FirstName : ");
+		dto.setFirst_name(sc.nextLine());
+		
+		try {
+			int n = emp.update(dto);
+			if(n != 0) {
+				System.out.println("변경 완료");
+			}else {
+				System.out.println("do not Update");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		sc.close();
+		allSelectList();
 	}
 }

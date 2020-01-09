@@ -26,4 +26,18 @@ public class JobDisplay {
 
 		}
 	}
+	
+	public void selectDisplay() {
+		JobServiceImpl jobs = new JobServiceImpl();
+		String key = "SA_REP";
+		try {
+			JobDto dto = (JobDto) jobs.select(key);
+			System.out.print("SEARCH : " + dto.getJob_id() + " ");
+			System.out.print(dto.getJob_title() + " ");
+			System.out.print(dto.getMax_salary() + " ");
+			System.out.println(dto.getMin_salary());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
